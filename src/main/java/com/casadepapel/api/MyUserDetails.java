@@ -1,6 +1,7 @@
 package com.casadepapel.api;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +14,10 @@ public class MyUserDetails implements UserDetails {
 
     public MyUserDetails(Utilisateur utilisateur) {
         this.utilisateur = utilisateur;
+    }
+
+    public MyUserDetails(Optional<Utilisateur> user) {
+        this.utilisateur = user.orElseThrow();
     }
 
     @Override
