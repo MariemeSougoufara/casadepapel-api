@@ -8,7 +8,6 @@ import com.casadepapel.api.entities.Utilisateur;
 
 
 
-@RepositoryRestController(path = "/auth/users")
 public interface UtilisateurRepository extends MongoRepository<Utilisateur, String> {
     Utilisateur findByEmail(String email);
 }

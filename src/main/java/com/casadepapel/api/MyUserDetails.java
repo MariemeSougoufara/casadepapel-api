@@ -17,7 +17,7 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return utilisateur.getEmail(); // Remplacez par le champ d'identification unique
+        return utilisateur.getEmail();
     }
 
     @Override
@@ -27,10 +27,26 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
+        return null;
     }
 
-    // Implémentez les autres méthodes requises par UserDetails (authorities, etc.)
-    // en fonction de votre entité Utilisateur
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

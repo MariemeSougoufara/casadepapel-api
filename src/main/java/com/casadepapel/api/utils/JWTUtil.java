@@ -1,39 +1,25 @@
 package com.casadepapel.api.utils;
 
-
-
 import java.time.Instant;
 import java.util.Date;
-
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
-import org.slf4j.Logger;
+import io.jsonwebtoken.*;
 
 @Component
 public class JWTUtil {
 
-    private static final String SECRET_KEY = "ma-cle-secrete-pour-les-jetons-jwt";
-
-    static Logger logger;
-    
+    private static final String SECRET_KEY = "60e654a472a36a779fd9f8af9bfd94ff50da539487703cdbda9675f4fee69b0c";
 
     public static String generateToken(UserDetails userDetails) {
-        JwtBuilder builder = Jwts.builder()
+        return Jwts.builder()
             .setSubject(userDetails.getUsername())
             .setIssuedAt(Date.from(Instant.now()))
             .setExpiration(Date.from(Instant.now().plusSeconds(3600))) // 1 heure d'expiration
-            .signWith(SignatureAlgorithm.HS256, SECRET_KEY);
-
-        return builder.compact();
+            .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+            .compact();
     }
 
     public static String extractUsernameFromToken(String token) {
@@ -46,20 +32,10 @@ public class JWTUtil {
 
     public static boolean validateToken(String token) {
         try {
-            Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token);
+            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
             return true;
-        } catch (SignatureException ex) {
-            logger.error("Signature du jeton JWT invalide");
-        } catch (MalformedJwtException ex) {
-            logger.error("Jeton JWT mal formé");
-        } catch (ExpiredJwtException ex) {
-            logger.error("Jeton JWT expiré");
-        } catch (UnsupportedJwtException ex) {
-            logger.error("Jeton JWT non pris en charge");
+        } catch (SignatureException | MalformedJwtException | ExpiredJwtException | UnsupportedJwtException ex) {
+            return false;
         }
-        return false;
     }
 }
-
