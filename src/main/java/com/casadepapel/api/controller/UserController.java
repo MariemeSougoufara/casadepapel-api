@@ -24,4 +24,11 @@ public class UserController {
     public Utilisateur getUserById(@PathVariable String id) {
         return utilisateurRepository.findById(id).orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
     }
+    
+    @GetMapping("/email/{email}")
+    public Utilisateur getUserByEmail(@PathVariable String email){
+        return utilisateurRepository.findByEmail(email);
+    }
+
+  
 }
