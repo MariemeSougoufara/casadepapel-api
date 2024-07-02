@@ -1,5 +1,6 @@
 package com.casadepapel.api.controller;
 
+
 import java.util.Collections;
 import java.util.Map;
 
@@ -57,8 +58,16 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> register(@RequestBody Utilisateur utilisateur) {
+        Utilisateur existingUser = utilisateurRepository.findByEmail(utilisateur.getEmail());
+        
+        if (existingUser != null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Collections.singletonMap("message", "Cet utilisateur existe deja"));
+        }
+
         utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
         utilisateurRepository.save(utilisateur);
+
         return ResponseEntity.ok(Collections.singletonMap("message", "Utilisateur enregistré avec succès"));
     }
 }

@@ -16,6 +16,6 @@ public class Transaction {
     private String typeTransaction;
     private Double montantTransaction;
     private Date dateTransaction;
-    
+    private String proprietaire;
     // Getters and Setters
 }

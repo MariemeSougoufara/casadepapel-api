@@ -17,6 +17,6 @@ public class Compte {
     private Double montantInitial;
     private Double plafonds;
     private Boolean etatCompte;
-    
+    private String proprietaire;
     // Getters and Setters
 }

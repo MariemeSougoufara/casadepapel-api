@@ -11,7 +11,7 @@ import com.casadepapel.api.entities.Utilisateur;
 
 
 public interface UtilisateurRepository extends MongoRepository<Utilisateur, String> {
-   Utilisateur findByEmail(String email);
+  Utilisateur findByEmail(String email);
     
 }
 
