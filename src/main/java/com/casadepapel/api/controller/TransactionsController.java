@@ -29,10 +29,8 @@ public class TransactionsController {
     }
     
     @GetMapping("/{email}")
-    public ResponseEntity<Object> getTransactionByEmail(@PathVariable String email) {
-        return transactionRepository.findByProprietaire(email)
-            .map(transaction -> ResponseEntity.ok().body((Object)transaction))
-            .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("message", "aucune transaction n'a ete trouvée")));
+    public List<Transaction> getTransactionByEmail(@PathVariable String email) {
+        return transactionRepository.findByProprietaire(email);
     }
 
 }

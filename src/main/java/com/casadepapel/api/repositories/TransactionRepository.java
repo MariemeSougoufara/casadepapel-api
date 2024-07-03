@@ -12,5 +12,5 @@ public interface TransactionRepository extends MongoRepository<Transaction, Stri
     List<Transaction> findByNumCompteDestination(String numCompteDestination);
     List<Transaction> findByTypeTransaction(String typeTransaction);
     List<Transaction> findByDateTransactionBetween(Date startDate, Date endDate);
-    Optional<Transaction> findByProprietaire(String proprietaire);
+    List<Transaction> findByProprietaire(String proprietaire);
 }

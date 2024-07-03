@@ -17,8 +17,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import com.casadepapel.api.LoginRequest;
+import com.casadepapel.api.config.DefaultConfig;
+import com.casadepapel.api.entities.Compte;
 import com.casadepapel.api.entities.Utilisateur;
 import com.casadepapel.api.repositories.UtilisateurRepository;
+import com.casadepapel.api.services.CompteService;
 import com.casadepapel.api.utils.JWTUtil;
 
 @RestController
@@ -36,6 +39,9 @@ public class AuthController {
 
     @Autowired
     private JWTUtil jwtUtil;
+
+    @Autowired
+    private CompteService compteService;
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest loginRequest) {
@@ -56,6 +62,9 @@ public class AuthController {
         }
     }
 
+    @Autowired
+    private DefaultConfig defaultConfig;
+
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> register(@RequestBody Utilisateur utilisateur) {
         Utilisateur existingUser = utilisateurRepository.findByEmail(utilisateur.getEmail());
@@ -65,8 +74,10 @@ public class AuthController {
                 .body(Collections.singletonMap("message", "Cet utilisateur existe deja"));
         }
 
+        Compte compte = compteService.createCompte(defaultConfig.getDefaultMontantInitial(), defaultConfig.getDefaultPlafonds(), utilisateur.getEmail());
         utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
         utilisateurRepository.save(utilisateur);
+
 
         return ResponseEntity.ok(Collections.singletonMap("message", "Utilisateur enregistré avec succès"));
     }
